@@ -1,0 +1,20 @@
+--- a/services/web/modules/server-ce-scripts/scripts/export-user-projects.mjs
++++ b/services/web/modules/server-ce-scripts/scripts/export-user-projects.mjs
+@@ -96,7 +96,7 @@
+     `Exporting ${allIds.length} projects for user ${userId} to ${output}`
+   )
+ 
+-  const zipStream = await createZipStreamForMultipleProjectsAsync(allIds)
++  const zipStream = await createZipStreamForMultipleProjectsAsync(allIds, false)
+ 
+   zipStream.on('progress', progress => {
+     updateProgress(progress.entries.total, allIds.length)
+@@ -132,7 +132,7 @@
+   console.log('Flushing project to MongoDB...')
+   await DocumentUpdaterHandler.promises.flushProjectToMongoAndDelete(projectId)
+   console.log(`Exporting project ${projectId} to ${output}`)
+-  const zipStream = await createZipStreamForProjectAsync(projectId)
++  const zipStream = await createZipStreamForProjectAsync(projectId, false, null)
+   await writeStreamToFileAtomically(zipStream, output)
+   console.log('Exported project to', output)
+ }
